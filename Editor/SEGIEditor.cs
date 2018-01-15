@@ -52,7 +52,7 @@ public class SEGIEditor : Editor
 
 	SEGI instance;
 
-	const string presetPath = "Assets/SEGI/Resources/Presets";
+	const string presetPath = "Assets/Packages/SEGI/Resources/Presets";
 
 	GUIStyle headerStyle;
 	GUIStyle vramLabelStyle
