@@ -377,7 +377,7 @@ public class SEGI : MonoBehaviour
 
 	void CreateVolumeTextures()
 	{
-		if (volumeTextures != null)
+		if (volumeTextures != null && volumeTextures.Length == numMipLevels)
 		{
 			for (int i = 0; i < numMipLevels; i++)
 			{
@@ -811,7 +811,7 @@ public class SEGI : MonoBehaviour
 
 		prevSunShadowResolution = (int)sunShadowResolution;
 
-		if (volumeTextures[0].width != (int)voxelResolution)
+		if (volumeTextures.Length == 0 || volumeTextures[0].width != (int)voxelResolution)
 		{
 			CreateVolumeTextures();
 		}
