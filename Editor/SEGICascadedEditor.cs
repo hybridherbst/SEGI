@@ -52,7 +52,7 @@ public class SEGICascadedEditor : Editor
 
 	SEGICascaded instance;
 
-	const string presetPath = "Assets/SEGI/Resources/Cascaded Presets";
+	const string presetPath = "Assets/Packages/SEGI/Resources/Cascaded Presets";
 
 	GUIStyle headerStyle;
 	GUIStyle vramLabelStyle

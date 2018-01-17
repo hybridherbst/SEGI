@@ -16,102 +16,88 @@ using System.Runtime.Serialization.Formatters.Binary;
 public class SEGI : MonoBehaviour
 {
 
-#region Parameters
-	[Serializable]
-	public enum VoxelResolution
-	{
-		low = 128,
-		high = 256
-	}
-
+#region Instance Parameters
 	public bool updateGI = true;
 	public LayerMask giCullingMask = 2147483647;
-	public float shadowSpaceSize = 50.0f;
-	public Light sun;
+    
+    public Transform followTransform;
+    public float voxelSpaceSize = 25.0f;
+    public float shadowSpaceSize = 50.0f;
+    
+    public Light sun;
+    public Color skyColor;
+    public bool sphericalSkylight = false;
+    [Range(0.0f, 16.0f)]
+    public float softSunlight = 0.0f;
+    [Range(0.0f, 8.0f)]
+    public float skyIntensity = 1.0f;
 
-	public Color skyColor;
-
-	public float voxelSpaceSize = 25.0f;
-
-	public bool useBilateralFiltering = false;
-
-	[Range(0, 2)]
-	public int innerOcclusionLayers = 1;
-
-
-	[Range(0.01f, 1.0f)]
-	public float temporalBlendWeight = 0.1f;
-
-
-	public VoxelResolution voxelResolution = VoxelResolution.high;
-
-	public bool visualizeSunDepthTexture = false;
-	public bool visualizeGI = false;
-	public bool visualizeVoxels = false;
-
-	public bool halfResolution = true;
-	public bool stochasticSampling = true;
-	public bool infiniteBounces = false;
-	public Transform followTransform;
-	[Range(1, 128)]
-	public int cones = 6;
-	[Range(1, 32)]
-	public int coneTraceSteps = 14;
-	[Range(0.1f, 2.0f)]
-	public float coneLength = 1.0f;
-	[Range(0.5f, 6.0f)]
-	public float coneWidth = 5.5f;
-	[Range(0.0f, 4.0f)]
-	public float occlusionStrength = 1.0f;
-	[Range(0.0f, 4.0f)]
-	public float nearOcclusionStrength = 0.5f;
-	[Range(0.001f, 4.0f)]
-	public float occlusionPower = 1.5f;
-	[Range(0.0f, 4.0f)]
-	public float coneTraceBias = 1.0f;
-	[Range(0.0f, 4.0f)]
-	public float nearLightGain = 1.0f;
-	[Range(0.0f, 4.0f)]
-	public float giGain = 1.0f;
-	[Range(0.0f, 4.0f)]
-	public float secondaryBounceGain = 1.0f;
-	[Range(0.0f, 16.0f)]
-	public float softSunlight = 0.0f;
-
-	[Range(0.0f, 8.0f)]
-	public float skyIntensity = 1.0f;
-
-	public bool doReflections = true;
-	[Range(12, 128)]
-	public int reflectionSteps = 64;
-	[Range(0.001f, 4.0f)]
-	public float reflectionOcclusionPower = 1.0f;
-	[Range(0.0f, 1.0f)]
-	public float skyReflectionIntensity = 1.0f;
-
-	public bool voxelAA = false;
-
-	public bool gaussianMipFilter = false;
-
-
-	[Range(0.1f, 4.0f)]
-	public float farOcclusionStrength = 1.0f;
-	[Range(0.1f, 4.0f)]
-	public float farthestOcclusionStrength = 1.0f;
-
-	[Range(3, 16)]
-	public int secondaryCones = 6;
-	[Range(0.1f, 4.0f)]
-	public float secondaryOcclusionStrength = 1.0f;
-
-	public bool sphericalSkylight = false;
-
+    public bool visualizeSunDepthTexture = false;
+    public bool visualizeGI = false;
+    public bool visualizeVoxels = false;
 #endregion
 
+#region SEGIPreset Parameters
+    [Serializable]
+    public enum VoxelResolution
+    {
+        low = 128,
+        high = 256
+    }
 
+    public VoxelResolution voxelResolution = VoxelResolution.high;
+    public bool voxelAA = false;
+    [Range(0, 2)]
+    public int innerOcclusionLayers = 1;
+    public bool infiniteBounces = false;
 
+    [Range(0.01f, 1.0f)]
+    public float temporalBlendWeight = 0.1f;
+    public bool useBilateralFiltering = false;
+    public bool halfResolution = true;
+    public bool stochasticSampling = true;
+    public bool doReflections = true;
 
+    [Range(1, 128)]
+    public int cones = 6;
+    [Range(1, 32)]
+    public int coneTraceSteps = 14;
+    [Range(0.1f, 2.0f)]
+    public float coneLength = 1.0f;
+    [Range(0.5f, 6.0f)]
+    public float coneWidth = 5.5f;
+    [Range(0.0f, 4.0f)]
+    public float coneTraceBias = 1.0f;
+    [Range(0.0f, 4.0f)]
+    public float occlusionStrength = 1.0f;
+    [Range(0.0f, 4.0f)]
+    public float nearOcclusionStrength = 0.5f;
+    [Range(0.001f, 4.0f)]
+    public float occlusionPower = 1.5f;
+    [Range(0.0f, 4.0f)]
+    public float nearLightGain = 1.0f;
+    [Range(0.0f, 4.0f)]
+    public float giGain = 1.0f;
+    [Range(0.0f, 4.0f)]
+    public float secondaryBounceGain = 1.0f;
+    [Range(12, 128)]
+    public int reflectionSteps = 64;
+    [Range(0.001f, 4.0f)]
+    public float reflectionOcclusionPower = 1.0f;
+    [Range(0.0f, 1.0f)]
+    public float skyReflectionIntensity = 1.0f;
+    public bool gaussianMipFilter = false;
 
+    [Range(0.1f, 4.0f)]
+    public float farOcclusionStrength = 1.0f;
+    [Range(0.1f, 4.0f)]
+    public float farthestOcclusionStrength = 1.0f;
+
+    [Range(3, 16)]
+    public int secondaryCones = 6;
+    [Range(0.1f, 4.0f)]
+    public float secondaryOcclusionStrength = 1.0f;
+#endregion
 
 #region InternalVariables
 	object initChecker;
@@ -203,14 +189,20 @@ public class SEGI : MonoBehaviour
 	}
 
 	RenderState renderState = RenderState.Voxelize;
+
+    /// <summary>
+    /// Did we already calculate and only need to display the results?
+    /// </summary>
+    internal static bool alreadyUpdatedThisFrame = false;
+    internal static SEGI calculationSEGIObject = null;
 #endregion
 
 
 
 
 
-#region SupportingObjectsAndProperties
-	struct Pass
+    #region SupportingObjectsAndProperties
+    struct Pass
 	{
 		public static int DiffuseTrace = 0;
 		public static int BilateralBlur = 1;
@@ -324,6 +316,59 @@ public class SEGI : MonoBehaviour
 
 #endregion
 
+    public void SaveToPreset(SEGIPreset preset)
+    {
+        preset.voxelResolution = this.voxelResolution;
+        preset.voxelAA = this.voxelAA;
+        preset.innerOcclusionLayers = this.innerOcclusionLayers;
+        preset.infiniteBounces = this.infiniteBounces;
+
+        preset.temporalBlendWeight = this.temporalBlendWeight;
+        preset.useBilateralFiltering = this.useBilateralFiltering;
+        preset.halfResolution = this.halfResolution;
+        preset.stochasticSampling = this.stochasticSampling;
+        preset.doReflections = this.doReflections;
+
+        preset.cones = this.cones;
+        preset.coneTraceSteps = this.coneTraceSteps;
+        preset.coneLength = this.coneLength;
+        preset.coneWidth = this.coneWidth;
+        preset.coneTraceBias = this.coneTraceBias;
+        preset.occlusionStrength = this.occlusionStrength;
+        preset.nearOcclusionStrength = this.nearOcclusionStrength;
+        preset.occlusionPower = this.occlusionPower;
+        preset.nearLightGain = this.nearLightGain;
+        preset.giGain = this.giGain;
+        preset.secondaryBounceGain = this.secondaryBounceGain;
+
+        preset.reflectionSteps = this.reflectionSteps;
+        preset.reflectionOcclusionPower = this.reflectionOcclusionPower;
+        preset.skyReflectionIntensity = this.skyReflectionIntensity;
+        preset.gaussianMipFilter = this.gaussianMipFilter;
+
+        preset.farOcclusionStrength = this.farOcclusionStrength;
+        preset.farthestOcclusionStrength = this.farthestOcclusionStrength;
+        preset.secondaryCones = this.secondaryCones;
+        preset.secondaryOcclusionStrength = this.secondaryOcclusionStrength;
+    }
+
+    public void CopyFrom(SEGI src)
+    {
+        updateGI = src.updateGI;
+        giCullingMask = src.giCullingMask;
+
+        followTransform = src.followTransform;
+        voxelSpaceSize = src.voxelSpaceSize;
+        shadowSpaceSize = src.shadowSpaceSize;
+
+        sun = src.sun;
+        skyColor = src.skyColor;
+        sphericalSkylight = src.sphericalSkylight;
+        softSunlight = src.softSunlight;
+        skyIntensity = src.skyIntensity;
+
+        enabled = src.enabled;
+    }
 
 	///<summary>Applies an SEGIPreset to this instance of SEGI.</summary>
 	public void ApplyPreset(SEGIPreset preset)
@@ -791,7 +836,10 @@ public class SEGI : MonoBehaviour
 
 	void Update()
 	{
-		if (notReadyToRender)
+        alreadyUpdatedThisFrame = false;
+        calculationSEGIObject = null;
+
+        if (notReadyToRender)
 			return;
 
 		if (previousGIResult == null)
@@ -839,7 +887,7 @@ public class SEGI : MonoBehaviour
 
 	void OnPreRender()
 	{
-		//Force reinitialization to make sure that everything is working properly if one of the cameras was unexpectedly destroyed
+		// Force reinitialization to make sure that everything is working properly if one of the cameras was unexpectedly destroyed
 		if (!voxelCamera || !shadowCam)
 			initChecker = null;
 			
@@ -853,12 +901,26 @@ public class SEGI : MonoBehaviour
 			return;
 		}
 
-		//Cache the previous active render texture to avoid issues with other Unity rendering going on
-		RenderTexture previousActive = RenderTexture.active;
+        if (alreadyUpdatedThisFrame)
+        {
+            return;
+        }
+
+        // only use main camera for voxel simulations
+        if (attachedCamera != Camera.main)
+        {
+            return;
+        }
+
+        alreadyUpdatedThisFrame = true;
+        //calculationSEGIObject = this;
+
+        //Debug.Log(Camera.current.name + "," + Camera.current.stereoActiveEye + ", " + calculationSEGIObject.name + ", " + Time.frameCount + ", " + Time.renderedFrameCount);
+
+        //Cache the previous active render texture to avoid issues with other Unity rendering going on
+        RenderTexture previousActive = RenderTexture.active;
 
 		Shader.SetGlobalInt("SEGIVoxelAA", voxelAA ? 1 : 0);
-
-
 
 		//Main voxelization work
 		if (renderState == RenderState.Voxelize)
@@ -1075,8 +1137,8 @@ public class SEGI : MonoBehaviour
 			return;
 		}
 
-		//Set parameters
-		Shader.SetGlobalFloat("SEGIVoxelScaleFactor", voxelScaleFactor);
+        //Set parameters
+        Shader.SetGlobalFloat("SEGIVoxelScaleFactor", voxelScaleFactor);
 
 		material.SetMatrix("CameraToWorld", attachedCamera.cameraToWorldMatrix);
 		material.SetMatrix("WorldToCamera", attachedCamera.worldToCameraMatrix);

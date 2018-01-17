@@ -294,39 +294,7 @@ public class SEGIEditor : Editor
 
 		//SEGIPreset preset = new SEGIPreset();
 		SEGIPreset preset = ScriptableObject.CreateInstance<SEGIPreset>();
-
-		preset.voxelResolution = instance.voxelResolution;
-		preset.voxelAA = instance.voxelAA;
-		preset.innerOcclusionLayers = instance.innerOcclusionLayers;
-		preset.infiniteBounces = instance.infiniteBounces;
-
-		preset.temporalBlendWeight = instance.temporalBlendWeight;
-		preset.useBilateralFiltering = instance.useBilateralFiltering;
-		preset.halfResolution = instance.halfResolution;
-		preset.stochasticSampling = instance.stochasticSampling;
-		preset.doReflections = instance.doReflections;
-
-		preset.cones = instance.cones;
-		preset.coneTraceSteps = instance.coneTraceSteps;
-		preset.coneLength = instance.coneLength;
-		preset.coneWidth = instance.coneWidth;
-		preset.coneTraceBias = instance.coneTraceBias;
-		preset.occlusionStrength = instance.occlusionStrength;
-		preset.nearOcclusionStrength = instance.nearOcclusionStrength;
-		preset.occlusionPower = instance.occlusionPower;
-		preset.nearLightGain = instance.nearLightGain;
-		preset.giGain = instance.giGain;
-		preset.secondaryBounceGain = instance.secondaryBounceGain;
-
-		preset.reflectionSteps = instance.reflectionSteps;
-		preset.reflectionOcclusionPower = instance.reflectionOcclusionPower;
-		preset.skyReflectionIntensity = instance.skyReflectionIntensity;
-		preset.gaussianMipFilter = instance.gaussianMipFilter;
-
-		preset.farOcclusionStrength = instance.farOcclusionStrength;
-		preset.farthestOcclusionStrength = instance.farthestOcclusionStrength;
-		preset.secondaryCones = instance.secondaryCones;
-		preset.secondaryOcclusionStrength = instance.secondaryOcclusionStrength;
+        instance.SaveToPreset(preset);
 
 		string path = presetPath + "/";
 
