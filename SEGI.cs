@@ -836,9 +836,6 @@ public class SEGI : MonoBehaviour
 
 	void Update()
 	{
-        alreadyUpdatedThisFrame = false;
-        calculationSEGIObject = null;
-
         if (notReadyToRender)
 			return;
 
@@ -896,26 +893,17 @@ public class SEGI : MonoBehaviour
 		if (notReadyToRender)
 			return;
 
-		if (!updateGI)
+        //if (attachedCamera != Camera.main)
+        //{
+        //    updateGI = false; // HACK Felix
+        //}
+        
+        if (!updateGI)
 		{
 			return;
 		}
-
-        if (alreadyUpdatedThisFrame)
-        {
-            return;
-        }
-
-        // only use main camera for voxel simulations
-        if (attachedCamera != Camera.main)
-        {
-            return;
-        }
-
-        alreadyUpdatedThisFrame = true;
-        //calculationSEGIObject = this;
-
-        //Debug.Log(Camera.current.name + "," + Camera.current.stereoActiveEye + ", " + calculationSEGIObject.name + ", " + Time.frameCount + ", " + Time.renderedFrameCount);
+        
+        // Debug.Log("rendering SEGI from " + Camera.current.name + "," + Camera.current.stereoActiveEye + ", " + Time.frameCount + ", " + Time.renderedFrameCount + ", " + renderState);
 
         //Cache the previous active render texture to avoid issues with other Unity rendering going on
         RenderTexture previousActive = RenderTexture.active;
